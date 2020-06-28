@@ -14,9 +14,9 @@
     })
 
     
-    function validateProductQuantity(id, quantity){
+    function getProductQuantity(id, quantity){
 
-        var query = `SELECT STOCK_QUANTITY FROM PRODUCTS WHERE ITEM_ID = ${id}`;
+        var query = `SELECT PRICE, STOCK_QUANTITY FROM PRODUCTS WHERE ITEM_ID = ${id}`;
 
         connection.query(query, function(err,data){
             if(err) throw err;
@@ -24,17 +24,37 @@
 
             for(var i = 0; i < data.length; i++){
 
-                var dbQuantity = data[i].STOCK_QUANTITY;
-                console.log(dbQuantity);
+                var item = 
+                {
+                    price: data[i].PRICE,
+                    quantity: data[i].STOCK_QUANTITY
+                };
 
-                if(dbQuantity < quantity){
-                    return false
-                }
+                console.log(item);
+
+                return item;
 
             }
 
-            return true;
         })
+
+        // connection.end();
+    }
+
+
+    function placeOrder(id, quantity, item){
+
+        var currentQuantity = item.quantity - quantity;
+        var price = item.price * quantity;
+
+        var query = `UPDATE PRODUCTS SET STOCK_QUANTITY = ${currentQuantity} WHERE ITEM_ID = ${id};`;
+
+        connection.query(query, function(err,data){
+            if(err) throw err;
+
+            console.log(`Product Updated to New Quantity ${quantcurrentQuantityity}`);
+            console.log(`Price $${price}`);
+        });
 
         connection.end();
     }
@@ -96,11 +116,13 @@
                 var id = answer.itemId;
                 var quantity = answer.itemQuantity;
 
-                var validation = validateProductQuantity(id,quantity);
+                var item = getProductQuantity(id,quantity);
 
-                if(!validation) {
-                    return console.log("Not Enough!");
+                if(item.quantity < quantity) {
+                    return console.log("Insufficient quantity!!");
                 }
+
+                getProducts(id, quantity, item);
             })
     }
 

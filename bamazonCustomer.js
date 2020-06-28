@@ -44,8 +44,36 @@ function getProducts(){
 
 }
 
+function userInput(){
 
-getProducts();
+    // Display the products available for purchase
+    getProducts();
+
+    inquirer
+        .prompt([
+            {
+                type:"input",
+                name:"itemId",
+                message:"Type the ID of the item you would like to purchase"
+            },
+            {
+                type: "input",
+                name: "itemQuantity",
+                message: "How many?"
+            }
+        ])
+        .then(answer => {
+            
+            console.log(answer);
+            
+        })
+}
+
+userInput();
+
+
+
+
 
 
 

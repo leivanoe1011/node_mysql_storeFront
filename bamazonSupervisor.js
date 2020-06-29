@@ -33,7 +33,7 @@
     function appendLineBreak(fields){
          
         var columnNames = "";
-        
+
         // Creating the underscore between columns and data
           for(var i = 0; i < fields.length; i++){
             var colName = fields[i].name;
@@ -54,7 +54,7 @@
     function viewProductByDepartment(){
 
         var query = "SELECT " +
-                "A.DEPARTMENT_ID " +
+                "LPAD(A.DEPARTMENT_ID,2,0) DEPARTMENT_ID " +
                 ",A.DEPARTMENT_NAME " +
                 ",A.OVERHEAD_COST " +
                 ",SUM(COALESCE(B.PRODUCT_SALES,0)) PRODUCT_SALES " +

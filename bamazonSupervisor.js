@@ -37,11 +37,31 @@
             }
 
             // console.log(fields);
-            console.log(data);
+            // console.log(data);
 
             for(var i = 0; i < fields.length; i++){
-                columnNames += `| ${fields[i].name}`;
+                columnNames += `| ${fields[i].name} `;
             }
+
+            columnNames += "|";
+
+            console.log(columnNames);
+
+            columnNames = "";
+
+            for(var i = 0; i < fields.length; i++){
+                var colName = fields[i].name;
+
+                columnNames += "| ";
+
+                for(var j = 0; j < colName.length; j++){
+                    columnNames += "-";
+                }
+
+                columnNames += " ";
+            }
+       
+            columnNames += "|";
 
             console.log(columnNames);
 

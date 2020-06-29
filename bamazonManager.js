@@ -208,18 +208,22 @@ function main(){
     ]) // end prompt
     .then(answer => {
         var appFunc = answer.managerOptions;
-        if(appFunc === "View Product"){
-            viewProduct();
+
+        switch(appFunc){
+            case "View Product":
+                viewProduct();
+                break;
+            case "View Low Inventory":
+                viewLowInventory();
+                break;
+            case "Add to Inventory":
+                addToInventory();
+                break;
+            case "Add New Product":
+                addNewProduction();
+                break;
         }
-        else if(appFunc === "View Low Inventory"){
-            viewLowInventory();
-        }
-        else if(appFunc === "Add to Inventory"){
-            addToInventory();
-        }
-        else if(appFunc === "Add New Product"){
-            addNewProduction();
-        }
+       
     })
 }
 
@@ -228,66 +232,15 @@ main();
 
 
 
-function viewSpecificProduct(){
-    
-    var query = "SELECT PRODUCT_NAME, DEPARTMENT_NAME FROM PRODUCTS;";
-    connection.query(query,function(err,data){
-
-        if(err){
-            connection.end();
-            throw err;
-        }
-
-        var products = [];
-
-        for(var i = 0; i < data.length; i++){
-            console.log("*----------------------*");
-
-            console.log(`Product Name: ${data[i].PRODUCT_NAME}`);
-            console.log(`Product Name: ${data[i].DEPARTMENT_NAME}`);
-
-            console.log("*----------------------*\n");
-
-            products.push(data[i].PRODUCT_NAME);
-        }
-
-
-        inquirer
-        .prompt([
-            {
-                type: "list",
-                name: "product",
-                message: "What product you would like to view? ",
-                choices: products
-            }
-        ])
-        .then(answer => {
-            var product = answer.product;
-            query = `SELECT PRODUCT_NAME, DEPARTMENT_NAME FROM PRODUCTS WHERE PRODUCT_NAME = ${product};`
-
-            connection.query(query, function(err,data){
-                if(err){
-                    connection.end();
-                    throw err;
-                }
-
-                for(var i = 0; i < data.length; i++){
-                    
-                    console.log("*----------------------*");
-              
-                    console.log(`Product Name: ${data[i].PRODUCT_NAME}`);
-                    console.log(`Product Name: ${data[i].DEPARTMENT_NAME}`);
-                    console.log(`Product Name: ${data[i].PRICE}`);
-                    console.log(`Product Name: ${data[i].STOCK_QUANTITY}`);
-        
-                    console.log("*----------------------*\n");
-                }
-
-                connection.end();
-                
-            })
-        })
-        
-    })
- 
-}
+//  if(appFunc === "View Product"){
+//     viewProduct();
+// }
+// else if(appFunc === "View Low Inventory"){
+//     viewLowInventory();
+// }
+// else if(appFunc === "Add to Inventory"){
+//     addToInventory();
+// }
+// else if(appFunc === "Add New Product"){
+//     addNewProduction();
+// }

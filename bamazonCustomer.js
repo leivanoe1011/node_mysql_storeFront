@@ -20,9 +20,9 @@
         var price = item.price * quantity;
 
         var query = `UPDATE PRODUCTS `+ 
-            `SET STOCK_QUANTITY = ${currentQuantity} ` + 
-            `,PRODUCT_SALES = ${price} + PRODUCT_SALES` +
-            `,PRODUCT_SOLD = ${quantity} + PRODUCT_SOLD` +
+            `SET STOCK_QUANTITY = ${currentQuantity}, ` + 
+            `PRODUCT_SALES = ${price} + COALESCE(PRODUCT_SALES,0), ` +
+            `PRODUCT_SOLD = ${quantity} + COALESCE(PRODUCT_SOLD,0) ` +
             `WHERE ITEM_ID = ${id};`;
 
         connection.query(query, function(err,data){

@@ -44,6 +44,30 @@ function viewProduct(){
 
 function viewLowInventory(){
 
+    var query = "SELECT " + 
+        "PRODUCT_NAME, DEPARTMENT_NAME, PRICE, STOCK_QUANTITY " + 
+        "FROM PRODUCTS ORDER BY STOCK_QUANTITY ASC;";
+
+    connection.query(query, function(err,data){
+        if(err){
+            connection.end();
+            throw err;
+        }
+
+        for(var i = 0; i < data.length; i++){
+            console.log("*----------------------*");
+              
+            console.log(`Product Name: ${data[i].PRODUCT_NAME}`);
+            console.log(`Department Name: ${data[i].DEPARTMENT_NAME}`);
+            console.log(`Price: ${data[i].PRICE}`);
+            console.log(`Stock Quantity: ${data[i].STOCK_QUANTITY}`);
+
+            console.log("*----------------------*\n");
+        }
+    })
+
+    connection.end();
+
 }
 
 function addToInventory(){

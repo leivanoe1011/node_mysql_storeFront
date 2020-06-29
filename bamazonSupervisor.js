@@ -14,6 +14,23 @@
         database: "BAMAZON_DB"
     });
 
+    function appendChar(str, charCnt, character){
+
+        var tempString = "";
+
+        for(var i = 0; i < charCnt; i++){
+            tempString += character;
+        }
+
+        // We can create an if statement if we want to append the temp 
+        // string to the front or back
+        str += tempString;
+
+        return str = str.substring(0, charCnt);
+
+    }
+
+
     function viewProductByDepartment(){
 
         var query = "SELECT " +
@@ -39,6 +56,8 @@
             // console.log(fields);
             // console.log(data);
 
+            console.log("\n");
+
             for(var i = 0; i < fields.length; i++){
                 columnNames += `| ${fields[i].name} `;
             }
@@ -49,6 +68,7 @@
 
             columnNames = "";
 
+            // Creating the underscore between columns and data
             for(var i = 0; i < fields.length; i++){
                 var colName = fields[i].name;
 
@@ -64,10 +84,38 @@
             columnNames += "|";
 
             console.log(columnNames);
+            
 
-            // for(var i = 0; i < data.length; i++){
-            //     console.log(data[i])
-            // }
+            for(var i = 0; i < data.length; i++){
+
+                columnNames = "";
+
+                var colCnt =  0;
+
+                columnNames += `| ${appendChar(data[i].DEPARTMENT_ID, fields[colCnt].name.length, " ")} `;
+
+                colCnt++;
+
+                columnNames += `| ${appendChar(data[i].DEPARTMENT_NAME, fields[colCnt].name.length, " ")} `;
+
+                colCnt++;
+
+                columnNames += `| ${appendChar(data[i].OVERHEAD_COST, fields[colCnt].name.length, " ")} `;
+
+                colCnt++;
+
+                columnNames += `| ${appendChar(data[i].PRODUCT_SALES, fields[colCnt].name.length, " ")} `;
+
+                colCnt++;
+
+                columnNames += `| ${appendChar(data[i].TOTAL_PROFIT, fields[colCnt].name.length, " ")} |`;
+
+                console.log(columnNames);
+
+            }
+
+            console.log("\n");
+            
         })
 
         connection.end();
@@ -108,5 +156,78 @@
 
     main();
 
+
+    function viewProductByDepartment1(){
+
+        var query = "SELECT " +
+                "A.DEPARTMENT_ID " +
+                ",A.DEPARTMENT_NAME " +
+                ",A.OVERHEAD_COST " +
+                ",SUM(COALESCE(B.PRODUCT_SALES,0)) PRODUCT_SALES " +
+                ",(SUM(COALESCE(B.PRODUCT_SALES,0)) - OVERHEAD_COST ) TOTAL_PROFIT " +
+                "FROM DEPARTMENTS A " +
+            "JOIN PRODUCTS B " +
+            "ON B.DEPARTMENT_NAME = A.DEPARTMENT_NAME " +
+            "GROUP BY A.DEPARTMENT_NAME, A.DEPARTMENT_ID, B.PRODUCT_SALES, A.OVERHEAD_COST;";
+
+        connection.query(query, function(err,data,fields){
+
+            var columnNames = "";
+
+            if(err){
+                connection.end();
+                throw err;
+            }
+
+            // console.log(fields);
+            console.log(data);
+
+            console.log("\n");
+
+            for(var i = 0; i < fields.length; i++){
+                columnNames += `| ${fields[i].name} `;
+            }
+
+            columnNames += "|";
+
+            console.log(columnNames);
+
+            columnNames = "";
+
+            for(var i = 0; i < fields.length; i++){
+                var colName = fields[i].name;
+
+                columnNames += "| ";
+
+                for(var j = 0; j < colName.length; j++){
+                    columnNames += "-";
+                }
+
+                columnNames += " ";
+            }
+       
+            columnNames += "|";
+
+            console.log(columnNames);
+
+            
+
+            for(var i = 0; i < data.length; i++){
+
+                columnNames = "";
+
+                columnNames += `|${data[i].DEPARTMENT_ID}|`;
+                columnNames += `|${data[i].DEPARTMENT_NAME}|`;
+                columnNames += `|${data[i].OVERHEAD_COST}|`;
+                columnNames += `|${data[i].PRODUCT_SALES}|`;
+                columnNames += `|${data[i].TOTAL_PROFIT}|`;
+
+                console.log(columnNames);
+
+            }
+        })
+
+        connection.end();
+    }
 
 

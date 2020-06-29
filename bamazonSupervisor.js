@@ -27,16 +27,30 @@
             "ON B.DEPARTMENT_NAME = A.DEPARTMENT_NAME " +
             "GROUP BY A.DEPARTMENT_NAME, A.DEPARTMENT_ID, B.PRODUCT_SALES, A.OVERHEAD_COST;";
 
-        connection.query(query, function(err,data){
+        connection.query(query, function(err,data,fields){
+
+            var columnNames = "";
+
             if(err){
                 connection.end();
                 throw err;
             }
 
-            for(var i = 0; i < data.length; i++){
-                
+            // console.log(fields);
+            console.log(data);
+
+            for(var i = 0; i < fields.length; i++){
+                columnNames += `| ${fields[i].name}`;
             }
+
+            console.log(columnNames);
+
+            // for(var i = 0; i < data.length; i++){
+            //     console.log(data[i])
+            // }
         })
+
+        connection.end();
     }
 
 
@@ -70,5 +84,9 @@
             }
         });
     }
+
+
+    main();
+
 
 

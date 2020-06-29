@@ -90,6 +90,7 @@
             var query = `UPDATE PRODUCTS SET ` + 
                 `STOCK_QUANTITY = ${answer.quantity} + STOCK_QUANTITY ` + 
                 `WHERE PRODUCT_NAME = "${product}"`;
+                
             connection.query(query, function(err,data){
                 if(err){
                     connection.end();

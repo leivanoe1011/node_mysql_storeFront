@@ -135,7 +135,34 @@
 
     function createNewDepartment(){
 
+        inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "departmentName",
+                message: "What is the new Department Name? "
+            },
+            {
+                type: "input",
+                name: "overHeadCost",
+                message: "What is the department overhead cost? "
+            }
+        ]) // end of Prompt
+        .then(answer => {
+            var query = `INSERT INTO DEPARTMENTS (DEPARTMENT_NAME,OVERHEAD_COST) ` +
+                `VALUES("${answer.departmentName}", ${answer.overHeadCost})`;
 
+            connection.query(query, function(err,data){
+                if(err){
+                    connection.end();
+                    throw err;
+                }
+
+                console.log(`New Department ${answer.departmentName} Added!`);
+            })
+
+            connection.end();
+        })
 
     }
 

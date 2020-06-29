@@ -145,12 +145,13 @@
 
                 addingInventory(product);
 
-            })
+            });
             
         })
 
         // connection.end();
     }
+
 
     function addNewProduction(){
 
@@ -230,7 +231,7 @@
                     break;
             }
         
-        })
+        });
     }
 
 

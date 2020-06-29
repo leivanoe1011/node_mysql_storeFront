@@ -30,6 +30,26 @@
 
     }
 
+    function appendLineBreak(fields){
+         
+        var columnNames = "";
+        
+        // Creating the underscore between columns and data
+          for(var i = 0; i < fields.length; i++){
+            var colName = fields[i].name;
+
+            columnNames += "| ";
+
+            for(var j = 0; j < colName.length; j++){
+                columnNames += "-";
+            }
+
+            columnNames += " ";
+        }
+   
+        return columnNames += "|";
+    }
+
 
     function viewProductByDepartment(){
 
@@ -68,20 +88,7 @@
 
             columnNames = "";
 
-            // Creating the underscore between columns and data
-            for(var i = 0; i < fields.length; i++){
-                var colName = fields[i].name;
-
-                columnNames += "| ";
-
-                for(var j = 0; j < colName.length; j++){
-                    columnNames += "-";
-                }
-
-                columnNames += " ";
-            }
-       
-            columnNames += "|";
+            columnNames = appendLineBreak(fields);
 
             console.log(columnNames);
             
@@ -114,6 +121,10 @@
 
             }
 
+            columnNames = appendLineBreak(fields);
+
+            console.log(columnNames);
+
             console.log("\n");
             
         })
@@ -123,6 +134,8 @@
 
 
     function createNewDepartment(){
+
+
 
     }
 

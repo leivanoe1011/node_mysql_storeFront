@@ -12,6 +12,9 @@ var connection = mySql.createConnection({
 })
 
 
+var appFunctions = ["View Product", "View Low Inventory", "Add to Inventory", "Add New Product"];
+
+
 function viewProduct(){
     
     var query = "SELECT PRODUCT_NAME, DEPARTMENT_NAME, PRICE, STOCK_QUANTITY FROM PRODUCTS;";
@@ -197,13 +200,14 @@ function addNewProduction(){
 
 
 function main(){
+
     inquirer
     .prompt([
         {
             type: "list",
             name: "managerOptions",
             message: "Select Function",
-            choices: ["View Product", "View Low Inventory", "Add to Inventory", "Add New Product"]
+            choices: appFunctions
         }
     ]) // end prompt
     .then(answer => {

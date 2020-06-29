@@ -11,9 +11,36 @@ var connection = mySql.createConnection({
     database: "BAMAZON_DB"
 })
 
-function viewProduct(){
 
+function viewProduct(){
+    
+    var query = "SELECT PRODUCT_NAME, DEPARTMENT_NAME, PRICE, STOCK_QUANTITY FROM PRODUCTS;";
+    connection.query(query,function(err,data){
+
+        if(err){
+            connection.end();
+            throw err;
+        }
+
+        for(var i = 0; i < data.length; i++){
+
+            console.log("*----------------------*");
+              
+            console.log(`Product Name: ${data[i].PRODUCT_NAME}`);
+            console.log(`Department Name: ${data[i].DEPARTMENT_NAME}`);
+            console.log(`Price: ${data[i].PRICE}`);
+            console.log(`Stock Quantity: ${data[i].STOCK_QUANTITY}`);
+
+            console.log("*----------------------*\n");
+
+        }
+        
+    })
+
+    connection.end();
+ 
 }
+
 
 function viewLowInventory(){
 
@@ -55,3 +82,71 @@ function main(){
     })
 }
 
+
+main();
+
+
+
+function viewSpecificProduct(){
+    
+    var query = "SELECT PRODUCT_NAME, DEPARTMENT_NAME FROM PRODUCTS;";
+    connection.query(query,function(err,data){
+
+        if(err){
+            connection.end();
+            throw err;
+        }
+
+        var products = [];
+
+        for(var i = 0; i < data.length; i++){
+            console.log("*----------------------*");
+
+            console.log(`Product Name: ${data[i].PRODUCT_NAME}`);
+            console.log(`Product Name: ${data[i].DEPARTMENT_NAME}`);
+
+            console.log("*----------------------*\n");
+
+            products.push(data[i].PRODUCT_NAME);
+        }
+
+
+        inquirer
+        .prompt([
+            {
+                type: "list",
+                name: "product",
+                message: "What product you would like to view? ",
+                choices: products
+            }
+        ])
+        .then(answer => {
+            var product = answer.product;
+            query = `SELECT PRODUCT_NAME, DEPARTMENT_NAME FROM PRODUCTS WHERE PRODUCT_NAME = ${product};`
+
+            connection.query(query, function(err,data){
+                if(err){
+                    connection.end();
+                    throw err;
+                }
+
+                for(var i = 0; i < data.length; i++){
+                    
+                    console.log("*----------------------*");
+              
+                    console.log(`Product Name: ${data[i].PRODUCT_NAME}`);
+                    console.log(`Product Name: ${data[i].DEPARTMENT_NAME}`);
+                    console.log(`Product Name: ${data[i].PRICE}`);
+                    console.log(`Product Name: ${data[i].STOCK_QUANTITY}`);
+        
+                    console.log("*----------------------*\n");
+                }
+
+                connection.end();
+                
+            })
+        })
+        
+    })
+ 
+}

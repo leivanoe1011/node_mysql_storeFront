@@ -13,13 +13,37 @@
         database: "BAMAZON_DB"
     })
 
+
+    function placeOrder(id, quantity, item){
+
+        var currentQuantity = item.quantity - quantity;
+        var price = item.price * quantity;
+
+        var query = `UPDATE PRODUCTS SET STOCK_QUANTITY = ${currentQuantity} WHERE ITEM_ID = ${id};`;
+
+        connection.query(query, function(err,data){
+            if(err) {
+                connection.end();
+                throw err
+            };
+
+            console.log(`Product Updated to New Quantity ${currentQuantity}`);
+            console.log(`Price $${price}`);
+        });
+
+        connection.end();
+    }
+
     
     function getProductQuantity(id, quantity){
 
         var query = `SELECT PRICE, STOCK_QUANTITY FROM PRODUCTS WHERE ITEM_ID = ${id}`;
 
         connection.query(query, function(err,data){
-            if(err) throw err;
+            if(err) {
+                connection.end();
+                throw err
+            };
 
 
             for(var i = 0; i < data.length; i++){
@@ -30,9 +54,15 @@
                     quantity: data[i].STOCK_QUANTITY
                 };
 
+                console.log("In for loop");
                 console.log(item);
 
-                return item;
+            
+                if(item.quantity < quantity) {
+                    return console.log("Insufficient quantity!!");
+                }
+
+                placeOrder(id, quantity, item);
 
             }
 
@@ -42,28 +72,14 @@
     }
 
 
-    function placeOrder(id, quantity, item){
-
-        var currentQuantity = item.quantity - quantity;
-        var price = item.price * quantity;
-
-        var query = `UPDATE PRODUCTS SET STOCK_QUANTITY = ${currentQuantity} WHERE ITEM_ID = ${id};`;
-
-        connection.query(query, function(err,data){
-            if(err) throw err;
-
-            console.log(`Product Updated to New Quantity ${quantcurrentQuantityity}`);
-            console.log(`Price $${price}`);
-        });
-
-        connection.end();
-    }
-
-
     function getProducts(){
 
         connection.connect(err => {
-            if(err) throw err;
+            if(err) {
+                connection.end();
+                throw err
+            };
+
             console.log("Connection Successful!");
 
             var query = "SELECT * FROM PRODUCTS";
@@ -95,7 +111,6 @@
 
 
 
-
     function userInput(){
 
         inquirer
@@ -116,16 +131,10 @@
                 var id = answer.itemId;
                 var quantity = answer.itemQuantity;
 
-                var item = getProductQuantity(id,quantity);
+                getProductQuantity(id,quantity);
 
-                if(item.quantity < quantity) {
-                    return console.log("Insufficient quantity!!");
-                }
-
-                getProducts(id, quantity, item);
             })
     }
-
 
 
     function main(){

@@ -16,5 +16,23 @@ Overall the app, makes use of the command line to view the different
 app functions provided by node js.  Then Node JS will transalate the 
 functions and either read or write against the mysql database. 
 
+<!-- Commands to run the app -->
+node bamazonCustomer
+
+node bamazonManager 
+
+node bamazonSupervisor
+
+
+
+
+
+
+
+
+
+
+
+
 
 

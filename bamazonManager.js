@@ -90,7 +90,7 @@
             var query = `UPDATE PRODUCTS SET ` + 
                 `STOCK_QUANTITY = ${answer.quantity} + STOCK_QUANTITY ` + 
                 `WHERE PRODUCT_NAME = "${product}"`;
-                
+
             connection.query(query, function(err,data){
                 if(err){
                     connection.end();
@@ -107,6 +107,7 @@
 
     function addToInventory(){
 
+        // Display the inventory first
         var query = "SELECT PRODUCT_NAME, DEPARTMENT_NAME, PRICE, STOCK_QUANTITY FROM PRODUCTS;";
         connection.query(query,function(err,data){
 
@@ -132,6 +133,7 @@
 
             }
             
+            // Then we ask the customer what he will like to add
             inquirer
             .prompt([
                 {
@@ -203,6 +205,7 @@
     }
 
 
+    // The app begins here. 
     function main(){
 
         inquirer

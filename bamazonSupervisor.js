@@ -60,7 +60,7 @@
                 ",SUM(COALESCE(B.PRODUCT_SALES,0)) PRODUCT_SALES " +
                 ",(SUM(COALESCE(B.PRODUCT_SALES,0)) - OVERHEAD_COST ) TOTAL_PROFIT " +
                 "FROM DEPARTMENTS A " +
-            "JOIN PRODUCTS B " +
+            "LEFT JOIN PRODUCTS B " +
             "ON B.DEPARTMENT_NAME = A.DEPARTMENT_NAME " +
             "GROUP BY A.DEPARTMENT_NAME, A.DEPARTMENT_ID, B.PRODUCT_SALES, A.OVERHEAD_COST;";
 
@@ -78,6 +78,7 @@
 
             console.log("\n");
 
+            // First we populate the column names
             for(var i = 0; i < fields.length; i++){
                 columnNames += `| ${fields[i].name} `;
             }
@@ -88,17 +89,20 @@
 
             columnNames = "";
 
+            // We add a line between the columns and the data
             columnNames = appendLineBreak(fields);
 
             console.log(columnNames);
             
 
+            // Next we populate the data
             for(var i = 0; i < data.length; i++){
 
                 columnNames = "";
 
                 var colCnt =  0;
 
+                // We append spaces to the data based on the column name lenght
                 columnNames += `| ${appendChar(data[i].DEPARTMENT_ID, fields[colCnt].name.length, " ")} `;
 
                 colCnt++;
@@ -167,6 +171,7 @@
     }
 
 
+    // Starts the app
     function main(){
 
         inquirer
@@ -196,78 +201,5 @@
 
     main();
 
-
-    function viewProductByDepartment1(){
-
-        var query = "SELECT " +
-                "A.DEPARTMENT_ID " +
-                ",A.DEPARTMENT_NAME " +
-                ",A.OVERHEAD_COST " +
-                ",SUM(COALESCE(B.PRODUCT_SALES,0)) PRODUCT_SALES " +
-                ",(SUM(COALESCE(B.PRODUCT_SALES,0)) - OVERHEAD_COST ) TOTAL_PROFIT " +
-                "FROM DEPARTMENTS A " +
-            "JOIN PRODUCTS B " +
-            "ON B.DEPARTMENT_NAME = A.DEPARTMENT_NAME " +
-            "GROUP BY A.DEPARTMENT_NAME, A.DEPARTMENT_ID, B.PRODUCT_SALES, A.OVERHEAD_COST;";
-
-        connection.query(query, function(err,data,fields){
-
-            var columnNames = "";
-
-            if(err){
-                connection.end();
-                throw err;
-            }
-
-            // console.log(fields);
-            console.log(data);
-
-            console.log("\n");
-
-            for(var i = 0; i < fields.length; i++){
-                columnNames += `| ${fields[i].name} `;
-            }
-
-            columnNames += "|";
-
-            console.log(columnNames);
-
-            columnNames = "";
-
-            for(var i = 0; i < fields.length; i++){
-                var colName = fields[i].name;
-
-                columnNames += "| ";
-
-                for(var j = 0; j < colName.length; j++){
-                    columnNames += "-";
-                }
-
-                columnNames += " ";
-            }
-       
-            columnNames += "|";
-
-            console.log(columnNames);
-
-            
-
-            for(var i = 0; i < data.length; i++){
-
-                columnNames = "";
-
-                columnNames += `|${data[i].DEPARTMENT_ID}|`;
-                columnNames += `|${data[i].DEPARTMENT_NAME}|`;
-                columnNames += `|${data[i].OVERHEAD_COST}|`;
-                columnNames += `|${data[i].PRODUCT_SALES}|`;
-                columnNames += `|${data[i].TOTAL_PROFIT}|`;
-
-                console.log(columnNames);
-
-            }
-        })
-
-        connection.end();
-    }
 
 

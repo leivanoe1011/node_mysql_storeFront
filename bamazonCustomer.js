@@ -14,6 +14,7 @@
     })
 
 
+    // This function will update the inventory
     function placeOrder(id, quantity, item){
 
         var currentQuantity = item.quantity - quantity;
@@ -39,6 +40,8 @@
     }
 
     
+    // Once we capture the item ID and Quantity of the purchase the customer 
+    // will like to make, then we update the inventory
     function getProductQuantity(id, quantity){
 
         var query = `SELECT PRICE, STOCK_QUANTITY FROM PRODUCTS WHERE ITEM_ID = ${id}`;
@@ -76,6 +79,7 @@
     }
 
 
+    // We first display the products to the customer
     function getProducts(){
 
         connection.connect(err => {
@@ -104,6 +108,7 @@
                     console.log("*---------------------------------*\n");
                 }
 
+                // We ask the customer what product they will like to purchase
                 userInput();
 
             })
@@ -114,6 +119,7 @@
     }
 
 
+    // Here we capture the user input
     function userInput(){
 
         inquirer
@@ -140,6 +146,7 @@
     }
 
 
+    // The app will begin here
     function main(){
         // Display the products available for purchase
         getProducts()
@@ -147,6 +154,7 @@
     }
 
 
+    // We call main to kick off our app
     main();
 
 
